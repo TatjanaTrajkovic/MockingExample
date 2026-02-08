@@ -86,7 +86,8 @@ public class ShoppingCartTest {
         shoppingCart.addProduct(bread);
 
         shoppingCart.addDiscount(10);
-        int totalValue = shoppingCart.getTotalAfterDiscount();
+
+        int totalValue = shoppingCart.getCartTotalValue();
 
         //assert
         assertThat(totalValue).isEqualTo(60);

@@ -72,6 +72,23 @@ public class ShoppingCartTest {
 
         //assert
         assertThat(totalValue).isEqualTo(55);
+    }
 
+    @Test
+    @DisplayName("Should return discounted total price")
+    void shouldReturnDiscountedTotalPrice(){
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        Product milk = new Product(30);
+        Product bread = new Product(40);
+
+        shoppingCart.addProduct(milk);
+        shoppingCart.addProduct(bread);
+
+        shoppingCart.addDiscount(10);
+        int totalValue = shoppingCart.getTotalAfterDiscount();
+
+        //assert
+        assertThat(totalValue).isEqualTo(60);
     }
 }

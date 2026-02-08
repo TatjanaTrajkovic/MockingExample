@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart {
-    public List<Product> products = new ArrayList<>();
+    private List<Product> products;
+    private int totalDiscount;
+
+    public ShoppingCart(){
+        this.products = new ArrayList<>();
+        this.totalDiscount = 0;
+    }
 
     public void addProduct(Product product){
         products.add(product);
@@ -26,4 +32,21 @@ public class ShoppingCart {
         }
         return total;
     }
+
+    public void addDiscount(int discount){
+        totalDiscount += discount;
+    }
+
+    public int getTotalAfterDiscount(){
+        int sum = 0;
+        for(Product product: products){
+            sum += product.getPrice();
+        }
+        int total = sum - totalDiscount;
+        if(total < 0){
+            return 0;
+        }
+        return total;
+    }
+
 }

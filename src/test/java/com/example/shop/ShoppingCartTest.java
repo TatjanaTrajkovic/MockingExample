@@ -19,6 +19,8 @@ public class ShoppingCartTest {
         Product milk = new Product();
         shoppingCart.addProduct(milk);
 
+        List<Product> products = shoppingCart.getAllProducts();
+        assertThat(products).containsExactlyInAnyOrder(milk);
     }
 
     @Test
@@ -104,6 +106,20 @@ public class ShoppingCartTest {
         int totalValue = shoppingCart.getCartTotalValue();
 
         assertThat(totalValue).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Should increase quantiy when same produt is added several times")
+    void shouldIncreaseQuantityWhenSameProductIsAddedSeveralTimes() {
+
+        ShoppingCart cart = new ShoppingCart();
+        Product milk = new Product(10);
+
+        cart.addProduct(milk);
+        cart.addProduct(milk);
+        cart.addProduct(milk);
+
+        assertThat(cart.getCartTotalValue()).isEqualTo(30);
     }
 
 

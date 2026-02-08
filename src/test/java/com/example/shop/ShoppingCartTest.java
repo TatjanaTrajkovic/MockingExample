@@ -122,5 +122,18 @@ public class ShoppingCartTest {
         assertThat(cart.getCartTotalValue()).isEqualTo(30);
     }
 
+    @Test
+    @DisplayName("Should ignore delete when product is not in cart")
+    void shouldIgnoreDeleteWhenProductIsNotInCart() {
+
+        ShoppingCart cart = new ShoppingCart();
+        Product milk = new Product(10);
+
+        cart.deleteProduct(milk);
+
+        assertThat(cart.getAllProducts()).isEmpty();
+    }
+
+
 
 }

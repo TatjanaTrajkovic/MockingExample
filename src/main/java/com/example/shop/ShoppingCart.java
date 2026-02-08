@@ -1,8 +1,16 @@
 package com.example.shop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShoppingCart {
+    public List<Product> products = new ArrayList<>();
 
     public void addProduct(Product product){
-        System.out.println("Product added");
+        products.add(product);
+    }
+
+    public List<Product> getAllProducts(){
+        return products;
     }
 }

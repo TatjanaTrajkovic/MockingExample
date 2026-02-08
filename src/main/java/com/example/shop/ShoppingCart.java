@@ -13,4 +13,8 @@ public class ShoppingCart {
     public List<Product> getAllProducts(){
         return products;
     }
+
+    public void deleteProduct(Product product){
+        products.remove(product);
+    }
 }

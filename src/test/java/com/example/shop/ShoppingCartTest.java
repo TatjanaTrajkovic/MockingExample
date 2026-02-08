@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.predicate;
 
 public class ShoppingCartTest {
 
@@ -37,8 +38,22 @@ public class ShoppingCartTest {
 
         //assert
         assertThat(products).containsExactlyInAnyOrder(eggs, bread);
+    }
 
+    @Test
+    @DisplayName("Should erase item from shopping cart")
+    void shouldEraseItemFromShoppingCart(){
+        ShoppingCart shoppingCart = new ShoppingCart();
 
+        Product flowers = new Product();
+        shoppingCart.addProduct(flowers);
 
+        shoppingCart.deleteProduct(flowers);
+
+        //act
+        List<Product> products = shoppingCart.getAllProducts();
+
+        //assert
+        assertThat(products).isEmpty();
     }
 }

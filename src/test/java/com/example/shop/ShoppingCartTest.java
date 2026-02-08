@@ -56,4 +56,14 @@ public class ShoppingCartTest {
         //assert
         assertThat(products).isEmpty();
     }
+
+    @Test
+    @DisplayName("Should return total sum of item prices")
+    void shouldReturnTotalSumOfItemPrices(){
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        Product bread = new Product(23);
+
+
+    }
 }

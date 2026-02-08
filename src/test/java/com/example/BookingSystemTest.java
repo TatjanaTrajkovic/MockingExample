@@ -206,8 +206,74 @@ class BookingSystemTest {
                 );
     }
 
+    @Test
+    @DisplayName("Should return true when cancellation is successfull")
+    void shouldReturnTrueWhenCancellationIsSuccessfull(){
+        //arrange
+        Room room1 = mock(Room.class);
+        Booking booking1 = mock(Booking.class);
 
 
+        List<Room> rooms = List.of(room1);
+        when(roomRepository.findAll()).thenReturn(rooms);
+        when(room1.hasBooking("1")).thenReturn(true);
+        when(room1.getBooking("1")).thenReturn(booking1);
+
+        LocalDateTime currentTime = LocalDateTime.of(2026,2,8, 10, 0);
+        LocalDateTime startTime = currentTime.plusHours(1);
+        when(timeProvider.getCurrentTime()).thenReturn(currentTime);
+        when(booking1.getStartTime()).thenReturn(startTime);
+
+        //act
+        boolean result = bookingSystem.cancelBooking("1");
+
+        //assert
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should throw exception when bookingId is null")
+    void shouldThrowExceptionWhenBookingIdIsNull(){
+        //act and assert
+        assertThatThrownBy(() ->
+                    bookingSystem.cancelBooking(null)
+                );
+    }
+
+    @Test
+    @DisplayName("Should return false when booking is empty")
+    void shouldReturnFalseWhenBookingIsEmpty(){
+        //arrange
+        when(roomRepository.findAll()).thenReturn(List.of());
+
+        //act
+        boolean result = bookingSystem.cancelBooking("1");
+
+        //assert
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should throw exception when startTime is before currentTime")
+    void shouldThrowExceptionWhenStartIsBeforeCurrentTime(){
+        //arrange
+        Room room = mock(Room.class);
+        Booking booking = mock(Booking.class);
+
+        when(roomRepository.findAll()).thenReturn(List.of(room));
+        when(room.hasBooking("1")).thenReturn(true);
+        when(room.getBooking("1")).thenReturn(booking);
+
+        LocalDateTime currentTime = LocalDateTime.of(2026,2,8, 10, 0);
+        LocalDateTime startTime = currentTime.minusMinutes(1);
+        when(timeProvider.getCurrentTime()).thenReturn(currentTime);
+        when(booking.getStartTime()).thenReturn(startTime);
+
+        //act and assert
+        assertThatThrownBy(() ->
+                    bookingSystem.cancelBooking("1")
+                );
+    }
 
 
 

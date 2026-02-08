@@ -17,7 +17,7 @@ public class ShoppingCart {
     }
 
     public List<Product> getAllProducts(){
-        return products;
+        return new ArrayList<>(products);
     }
 
     public void deleteProduct(Product product){
@@ -30,12 +30,18 @@ public class ShoppingCart {
         for(Product product : products){
             total += product.getPrice();
         }
+
         total -= totalDiscount;
+        if(total < 0){
+            total = 0;
+        }
         return total;
     }
 
     public void addDiscount(int discount){
         totalDiscount += discount;
     }
+
+
 
 }

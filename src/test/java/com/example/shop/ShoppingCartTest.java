@@ -92,4 +92,19 @@ public class ShoppingCartTest {
         //assert
         assertThat(totalValue).isEqualTo(60);
     }
+
+    @Test
+    @DisplayName("Should not return negative total after discount")
+    void shouldNotReturnNegativeTotalAfterDiscount(){
+        ShoppingCart shoppingCart = new ShoppingCart();
+
+        shoppingCart.addProduct(new Product(20));
+        shoppingCart.addDiscount(50);
+
+        int totalValue = shoppingCart.getCartTotalValue();
+
+        assertThat(totalValue).isEqualTo(0);
+    }
+
+
 }

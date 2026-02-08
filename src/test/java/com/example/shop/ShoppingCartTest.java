@@ -63,7 +63,15 @@ public class ShoppingCartTest {
         ShoppingCart shoppingCart = new ShoppingCart();
 
         Product bread = new Product(23);
+        Product rice = new Product(32);
 
+        shoppingCart.addProduct(bread);
+        shoppingCart.addProduct(rice);
+
+        int totalValue = shoppingCart.getCartTotalValue();
+
+        //assert
+        assertThat(totalValue).isEqualTo(55);
 
     }
 }

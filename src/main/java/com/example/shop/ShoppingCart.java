@@ -18,5 +18,12 @@ public class ShoppingCart {
         products.remove(product);
     }
 
+    public int getCartTotalValue(){
+        int total = 0;
 
+        for(Product product : products){
+            total += product.getPrice();
+        }
+        return total;
+    }
 }

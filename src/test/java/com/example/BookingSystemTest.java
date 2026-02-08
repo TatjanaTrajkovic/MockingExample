@@ -8,11 +8,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 class BookingSystemTest {
@@ -134,12 +136,8 @@ class BookingSystemTest {
 
         when(room.isAvailable(startTime, endTime)).thenReturn(false);
 
-
-
-
         //Act
         boolean result = bookingSystem.bookRoom("1", endTime, endTime);
-
 
         //Assert-verifiera
         assertThat(result).isFalse();
@@ -147,63 +145,71 @@ class BookingSystemTest {
     }
 
 
+    @Test
+    @DisplayName("Should return all available rooms")
+    void shouldReturnAllAvailableRooms(){
+        //arrange
+        //2. 3.
+        LocalDateTime startTime = LocalDateTime.of(2026, 2, 8, 10, 0);
+        LocalDateTime endTime = startTime.plusHours(1);
+
+        //5.
+        Room room1 = mock(Room.class);
+        Room room2 = mock(Room.class);
+
+        //6.
+        List<Room> availableRooms = List.of(room1, room2);
+        //Vi tittar på repository.findall() som ska mockas för att returnera en lista, med 2 lediga room
+
+        //4.
+        when(roomRepository.findAll()).thenReturn(availableRooms);
+        //7.
+        when(room1.isAvailable(startTime,endTime)).thenReturn(true);
+        when(room2.isAvailable(startTime,endTime)).thenReturn(true);
+
+        //act 1
+        List<Room> result = bookingSystem.getAvailableRooms(startTime, endTime);
+
+        //assert 8.
+        assertThat(result).containsExactlyInAnyOrder(room1, room2);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidTimeArguments")
+    @DisplayName("Should throw exception when start or end time is null")
+    void shouldThrowExceptionWhenStartOrEndTimeIsNull(LocalDateTime startTime, LocalDateTime endTime){
+        //act and assert
+        assertThatThrownBy(() ->
+                    bookingSystem.getAvailableRooms(startTime, endTime)
+                );
+    }
+    static Stream<Arguments> invalidTimeArguments(){
+        LocalDateTime startTime = LocalDateTime.of(2026,2,8, 10, 0);
+        LocalDateTime endTime = startTime.plusHours(1);
+        return Stream.of(
+                Arguments.of(null, endTime),
+                Arguments.of(startTime, null)
+        );
+    }
+
+    @Test
+    @DisplayName("Should throw exception when endtime is before starttime")
+    void shouldThrowExceptionWhenEndIsBeforeStartTime(){
+        // arrange
+        LocalDateTime startTime = LocalDateTime.of(2026, 2, 8, 10, 0);
+        LocalDateTime endTime = startTime.minusMinutes(1);
+
+        // act and assert
+        assertThatThrownBy(() ->
+                    bookingSystem.getAvailableRooms(startTime, endTime)
+                );
+    }
 
 
 
-//
-//    @Test
-//    @DisplayName("Should book room when romm exists and is available")
-//    void bookRoomSucessfully(){
-//        // Arange
-//        String roomId = "1";
-//        LocalDateTime currentTime = LocalDateTime.of(2026, 2, 7, 22, 00);
-//        when(timeProvider.getCurrentTime()).thenReturn(currentTime);
-//
-//        LocalDateTime startTime = currentTime.plusHours(1);
-//        LocalDateTime endTime = currentTime.plusHours(2);
-//
-//        Room room = mock(Room.class);
-//        when(roomRepository.findById("1")).thenReturn(Optional.of(room));
-//        when(room.isAvailable(startTime, endTime)).thenReturn(true);
-//
-//        //act
-//        boolean result = bookingSystem.bookRoom(roomId, startTime, endTime);
-//
-//        //assert
-//        assertThat(result).isTrue();
-//
-//
-//
-//
-//
-//        @Test
-//        @DisplayName("Should show all available rooms for a certain timeperion")
-//        void showAllAvailableRooms(){
-//            //Arrange
-//            LocalDateTime currentTime = LocalDateTime.of(2026, 2, 7, 22, 00);
-//
-//            LocalDateTime startTime = currentTime.plusHours(1);
-//            LocalDateTime endTime = startTime.plusHours(2);
-//
-//            Room room1 = mock(Room.class);
-//            Room room2 = mock(Room.class);
-//
-//            when(room1.isAvailable(startTime, endTime)).thenReturn(true);
-//            when(room2.isAvailable(startTime, endTime)).thenReturn(true);
-//
-//            List<Room> roomsAvailable = List.of(room1, room2);
-//            when(roomRepository.findAll()).thenReturn(roomsAvailable);
-//
-//            //Act
-//            List<Room> rooms = bookingSystem.getAvailableRooms(startTime, endTime);
-//
-//            //Assert
-//            assertThat(rooms).containsExactlyInAnyOrder(room1, room2);
-//
-//
-//        }
-//
-//    }
+
+
 
 
 }

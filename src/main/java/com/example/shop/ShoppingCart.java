@@ -28,7 +28,6 @@ public class ShoppingCart {
     }
 
     public int getCartTotalValue() {
-
         int total = 0;
 
         for (Map.Entry<Product, Integer> entry : products.entrySet()) {
@@ -41,12 +40,7 @@ public class ShoppingCart {
         return total;
     }
 
-
-
     public void addDiscount(int discount){
         totalDiscount += discount;
     }
-
-
-
 }

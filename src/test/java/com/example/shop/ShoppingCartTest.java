@@ -170,8 +170,4 @@ public class ShoppingCartTest {
         assertThat(cart.getCartTotalValue()).isEqualTo(0);
         assertThat(cart.getAllProducts()).isEmpty();
     }
-
-
-
-
 }

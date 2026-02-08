@@ -143,6 +143,34 @@ public class ShoppingCartTest {
         assertThat(cart.getCartTotalValue()).isEqualTo(0);
     }
 
+    @Test
+    @DisplayName("Should return zero when discount is added to empty cart")
+    void shouldReturnZeroWhenDiscountIsAddedToEmptyCart() {
+
+        ShoppingCart cart = new ShoppingCart();
+
+        cart.addDiscount(100);
+
+        assertThat(cart.getCartTotalValue()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("Should remove product completely even if added multiple times")
+    void shouldRemoveProductCompletelyEvenIfAddedMultipleTimes() {
+
+        ShoppingCart cart = new ShoppingCart();
+        Product milk = new Product(10);
+
+        cart.addProduct(milk);
+        cart.addProduct(milk);
+        cart.addProduct(milk);
+
+        cart.deleteProduct(milk);
+
+        assertThat(cart.getCartTotalValue()).isEqualTo(0);
+        assertThat(cart.getAllProducts()).isEmpty();
+    }
+
 
 
 

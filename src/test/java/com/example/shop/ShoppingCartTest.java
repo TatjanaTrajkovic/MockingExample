@@ -134,6 +134,16 @@ public class ShoppingCartTest {
         assertThat(cart.getAllProducts()).isEmpty();
     }
 
+    @Test
+    @DisplayName("Should return zero when cart is empty")
+    void shouldReturnZeroWhenCartIsEmpty() {
+
+        ShoppingCart cart = new ShoppingCart();
+
+        assertThat(cart.getCartTotalValue()).isEqualTo(0);
+    }
+
+
 
 
 }
